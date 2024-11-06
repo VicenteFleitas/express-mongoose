@@ -8,8 +8,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const Contact = require("./routes/Contact"); // 1
+const User = require("./routes/User"); // 2
 
 app.use("/api", Contact);
+app.use("/api", User);
 
 const connectToDB = async () => {
   try {
