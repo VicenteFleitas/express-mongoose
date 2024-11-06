@@ -91,4 +91,51 @@ router.get("/search", async (req, res) => {
   }
 });
 
+router.put("/contact/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const updatedContact = req.body;
+    Contact.findOneAndUpdate({ _id: id }, updatedContact, { new: true })
+      .then((updatedContact) => {
+        console.log(updatedContact);
+        res.status(200).json({
+          msg: "Contact successfully updated.",
+          contact: updatedContact,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(500).json({ msg: "Unable to update contact." });
+      });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "Unable to update the contact." });
+  }
+});
+
+// soft delete --> active => Y/N
+// hard delete
+router.delete("/contact/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    Contact.findByIdAndDelete(id)
+      .then((deletedContact) => {
+        console.log(deletedContact);
+        res
+          .status(200)
+          .json({
+            msg: "Contact successfully deleted.",
+            contact: deletedContact,
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(500).json({ msg: "Unable to delete the contact." });
+      });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "Unable to delete contact." });
+  }
+});
+
 module.exports = router;
