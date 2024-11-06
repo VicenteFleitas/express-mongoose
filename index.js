@@ -3,19 +3,17 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 
 const app = express();
+// middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const Contact = require("./routes/Contact");
+const Contact = require("./routes/Contact"); // 1
 
 app.use("/api", Contact);
 
 const connectToDB = async () => {
   try {
     await mongoose.connect("mongodb://localhost:27017/mydatabase", {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      //   useCreateIndex: true,
       autoIndex: true,
     });
     console.log("Connected to MongoDb.");
