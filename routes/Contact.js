@@ -2,6 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const Contact = require("../models/Contact");
+const verificar = require("../middleware/User");
 
 // /api/contact/
 router.post("/contact", async (req, res) => {
@@ -27,7 +28,7 @@ router.post("/contact", async (req, res) => {
   }
 });
 
-router.get("/contact", async (req, res) => {
+router.get("/contact", verificar, async (req, res) => {
   try {
     Contact.find()
       .then((contacts) => {
@@ -121,12 +122,10 @@ router.delete("/contact/:id", async (req, res) => {
     Contact.findByIdAndDelete(id)
       .then((deletedContact) => {
         console.log(deletedContact);
-        res
-          .status(200)
-          .json({
-            msg: "Contact successfully deleted.",
-            contact: deletedContact,
-          });
+        res.status(200).json({
+          msg: "Contact successfully deleted.",
+          contact: deletedContact,
+        });
       })
       .catch((error) => {
         console.log(error);
